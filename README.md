@@ -2,7 +2,7 @@
 
 A Go-generics (Go 1.18) based functional library with no side-effects that adds the following functions to a `slice` package:
 
-- `Unique(AnySlice)`: removes duplicate items from a slice
+- `Unique()`: removes duplicate items from a slice
 - `SortedUnique()`: removes duplicate items from a sorted slice. Fast!
 - `Sort()`: Sorts a slice
 - `SortBy()`: Sorts a slice by arbitrary criteria
@@ -47,3 +47,16 @@ Method signatures:
 - slice.Find([]T, func(i int, elem T) T) (elem T, found bool) 
 
 Note the AccumulatorFunc signature is `func(acc T, i int, elem T) T`
+
+## Examples
+
+See tests for more examples. Here are a few:
+
+```go
+  // sum function implemented with Reduce
+  input := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+	result := slice.Reduce(input, 0, func(acc int, i int, elem int) string {
+		return acc + elem
+	})
+  // result == 55
+```
