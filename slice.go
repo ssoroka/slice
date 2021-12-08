@@ -37,7 +37,7 @@ func Sort[T Ordered](ss []T) []T {
 	}
 	ss2 := make([]T, len(ss))
 	copy(ss2, ss)
-	sort.Slice(ss2, func(i int, j int) bool{
+	sort.Slice(ss2, func(i int, j int) bool {
 		return ss2[i] <= ss2[j]
 	})
 	return ss2
@@ -107,18 +107,19 @@ func Subtract[T Ordered](s1, s2 []T) []T {
 	return result
 }
 
+type MapFunc[T any] interface {
+	func(int, T) T | func(T) T
+}
+
 // Map over each element in the slice and perform an operation on it. the result of the operation will replace the element value.
 // Normal func structure is func(i int, s string) string.
 // Also accepts func structure func(s string) string
-func Map[T any](ss []T, funcInterface interface{}) []T {
+func Map[T any, F MapFunc[T]](ss []T, funcInterface F) []T {
 	if ss == nil {
 		return nil
 	}
-	if funcInterface == nil {
-		return ss
-	}
 	f := func(i int, s T) T {
-		switch tf := funcInterface.(type) {
+		switch tf := (interface{})(funcInterface).(type) {
 		case func(int, T) T:
 			return tf(i, s)
 		case func(T) T:
@@ -170,7 +171,6 @@ func SortedIndex[T Ordered](ss []T, s T) int {
 	return -1
 }
 
-
 // First returns the First element, or "" if there are no elements in the slice.
 // First will also return an "ok" bool value that will be false if there were no elements to select from
 func First[T any](ss []T) (T, bool) {
@@ -189,9 +189,13 @@ func Last[T any](ss []T) (T, bool) {
 	return *new(T), false
 }
 
-func Select[T any](ss []T, funcInterface interface{}) []T {
+type SelectFunc[T any] interface {
+	~func(int, T) bool | ~func(T) bool
+}
+
+func Select[T any, F SelectFunc[T]](ss []T, funcInterface F) []T {
 	f := func(i int, s T) bool {
-		switch tf := funcInterface.(type) {
+		switch tf := (interface{})(funcInterface).(type) {
 		case func(int, T) bool:
 			return tf(i, s)
 		case func(T) bool:
@@ -226,7 +230,7 @@ func SortedContains[T Ordered](ss []T, s T) bool {
 func Pop[T any](ss []T) (T, []T) {
 	elem, ok := Last(ss)
 	if ok {
-		return elem, ss[0:len(ss)-1]
+		return elem, ss[0 : len(ss)-1]
 	}
 
 	return elem, nil
@@ -246,10 +250,14 @@ func Unshift[T any](ss []T, elem T) []T {
 	return append([]T{elem}, ss...)
 }
 
+type FindFunc[T any] interface {
+	~func(T) bool | ~func(int, T) bool
+}
+
 // Find and return the first element that matches. returns false if none found.
-func Find[T any](ss []T, funcInterface interface{}) (elem T, found bool) {
+func Find[T any, F FindFunc[T]](ss []T, funcInterface F) (elem T, found bool) {
 	f := func(i int, s T) bool {
-		switch tf := funcInterface.(type) {
+		switch tf := (interface{})(funcInterface).(type) {
 		case func(int, T) bool:
 			return tf(i, s)
 		case func(T) bool:

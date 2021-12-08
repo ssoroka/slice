@@ -38,11 +38,6 @@ func TestMap(t *testing.T) {
 
 	require.Equal(t, expected, result)
 
-	var nilStringSlice []string
-	require.Equal(t, []string(nil), slice.Map(nilStringSlice, nil))
-	require.Equal(t, []string{}, slice.Map([]string{}, nil))
-	require.Equal(t, []string{"a"}, slice.Map([]string{"a"}, nil))
-
 	require.Equal(t, []string{"FISH"}, slice.Map([]string{"fish"}, strings.ToUpper))
 	require.Equal(t, []string{"fish"}, slice.Map([]string{" fish "}, strings.TrimSpace))
 
