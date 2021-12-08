@@ -108,7 +108,7 @@ func Subtract[T Ordered](s1, s2 []T) []T {
 }
 
 type MapFunc[T any] interface {
-	func(int, T) T | func(T) T
+	~func(int, T) T | ~func(T) T
 }
 
 // Map over each element in the slice and perform an operation on it. the result of the operation will replace the element value.
