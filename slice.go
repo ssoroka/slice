@@ -107,27 +107,27 @@ func Subtract[T Ordered](s1, s2 []T) []T {
 	return result
 }
 
-type MapFunc[T any] interface {
-	~func(int, T) T | ~func(T) T
+type MapFunc[T any, R any] interface {
+	~func(int, T) R | ~func(T) R
 }
 
 // Map over each element in the slice and perform an operation on it. the result of the operation will replace the element value.
 // Normal func structure is func(i int, s string) string.
 // Also accepts func structure func(s string) string
-func Map[T any, F MapFunc[T]](ss []T, funcInterface F) []T {
+func Map[T any, R any, F MapFunc[T, R]](ss []T, funcInterface F) []R {
 	if ss == nil {
 		return nil
 	}
-	f := func(i int, s T) T {
+	f := func(i int, s T) R {
 		switch tf := (interface{})(funcInterface).(type) {
-		case func(int, T) T:
+		case func(int, T) R:
 			return tf(i, s)
-		case func(T) T:
+		case func(T) R:
 			return tf(s)
 		}
 		panic(fmt.Sprintf("Map cannot understand function type %T", funcInterface))
 	}
-	result := make([]T, len(ss))
+	result := make([]R, len(ss))
 	for i, s := range ss {
 		result[i] = f(i, s)
 	}

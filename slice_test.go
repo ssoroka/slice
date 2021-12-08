@@ -31,16 +31,17 @@ func TestUnique(t *testing.T) {
 
 func TestMap(t *testing.T) {
 	s := []string{"a", "b", "c"}
-	result := slice.Map(s, func(i int, s string) string {
+	result := slice.Map[string, string](s, func(i int, s string) string {
 		return strings.ToUpper(s)
 	})
 	expected := []string{"A", "B", "C"}
 
 	require.Equal(t, expected, result)
 
-	require.Equal(t, []string{"FISH"}, slice.Map([]string{"fish"}, strings.ToUpper))
-	require.Equal(t, []string{"fish"}, slice.Map([]string{" fish "}, strings.TrimSpace))
+	require.Equal(t, []string{"FISH"}, slice.Map[string, string]([]string{"fish"}, strings.ToUpper))
+	require.Equal(t, []string{"fish"}, slice.Map[string, string]([]string{" fish "}, strings.TrimSpace))
 
+	require.Equal(t, []int{4}, slice.Map[string, int]([]string{"fish"}, func(s string) int { return len(s) }))
 }
 
 func TestReduce(t *testing.T) {
