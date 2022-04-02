@@ -64,8 +64,12 @@ See tests for more examples. Here are a few:
 map from complex structs to string slices
 
 ```
-names := slice.Map[models.Group, string](user.Groups, func(group models.Group) string {
+type Group struct {
+	Name string
+}
+groups := []Group{{Name: "users"}, {Name: "admins"}}
+names := slice.Map[Group, string](groups, func(group Group) string {
 	return group.Name
 })
-fmt.Println(names)
+fmt.Println(names) // outputs ["users", "admins"]
 ```
