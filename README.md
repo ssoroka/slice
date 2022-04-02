@@ -60,3 +60,12 @@ See tests for more examples. Here are a few:
 	})
   // result == 55
 ```
+
+map from complex structs to string slices
+
+```
+names := slice.Map[models.Group, string](user.Groups, func(group models.Group) string {
+	return group.Name
+})
+fmt.Println(names)
+```
