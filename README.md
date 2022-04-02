@@ -63,7 +63,7 @@ See tests for more examples. Here are a few:
 
 map from complex structs to string slices
 
-```
+```go
 type Group struct {
 	Name string
 }
