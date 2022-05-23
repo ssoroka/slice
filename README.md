@@ -24,7 +24,7 @@ A Go-generics (Go 1.18) based functional library with no side-effects that adds 
 
 Method signatures:
 
-(where T is almost any type)
+(where T and R is almost any type and can be same type)
 
 - slice.Unique([]T) []T 
 - slice.SortedUnique([]T) []T 
@@ -32,8 +32,8 @@ Method signatures:
 - slice.SortBy([]T, sortFunc func(slice []T, i, j int) bool) []T 
 - slice.Compare(s1, s2 []T, left, equal, right func(elem T)) 
 - slice.Subtract(s1, s2 []T) []T 
-- slice.Map([]T, func(i int, elem T) T) []T 
-- slice.Reduce(items []T, initialAccumulator T, f AccumulatorFunc[T]) T 
+- slice.Map([]T, func(i int, elem T) R) []R
+- slice.Reduce(items []T, initialAccumulator R, f func(acc R, i int, s T) R) R
 - slice.Index([]T, elem T) int 
 - slice.SortedIndex([]T, elem T) int 
 - slice.First([]T) (T, bool) 
@@ -45,8 +45,6 @@ Method signatures:
 - slice.Shift([]T) (T, []T) 
 - slice.Unshift([]T, elem T) []T 
 - slice.Find([]T, func(i int, elem T) T) (elem T, found bool) 
-
-Note the AccumulatorFunc signature is `func(acc T, i int, elem T) T`
 
 ## Examples
 
