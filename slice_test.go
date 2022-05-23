@@ -56,6 +56,24 @@ func TestReduce(t *testing.T) {
 	})
 
 	require.Equal(t, "55", result)
+
+	type OddEven struct {
+		Odd  int
+		Even int
+	}
+
+	s2 := []int{0, 1, 2, 3, 4}
+
+	result2 := slice.Reduce(s2, OddEven{}, func(acc OddEven, i int, s int) OddEven {
+		if s%2 == 0 {
+			acc.Even++
+		} else {
+			acc.Odd++
+		}
+		return acc
+	})
+
+	require.Equal(t, OddEven{Odd: 2, Even: 3}, result2)
 }
 
 func TestSelect(t *testing.T) {
